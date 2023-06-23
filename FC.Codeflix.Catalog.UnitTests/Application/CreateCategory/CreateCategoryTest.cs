@@ -22,7 +22,7 @@ public class CreateCategoryTest
     
 
     [Fact(DisplayName = nameof(CreateCategory))]
-    [Trait("Application", "CreateCategory - Use Cases")]
+    [Trait("Application", "CreateCategory - UseCases")]
     public async void CreateCategory()
     {
         var repositoryMock = CreateCategoryTestFixture.GetRepositoryMock();
@@ -58,7 +58,7 @@ public class CreateCategoryTest
     }
 
     [Fact(DisplayName = nameof(CreateCategoryWithOnlyName))]
-    [Trait("Application", "CreateCategory - Use Cases")]
+    [Trait("Application", "CreateCategory - UseCases")]
     public async void CreateCategoryWithOnlyName()
     {
         var repositoryMock = CreateCategoryTestFixture.GetRepositoryMock();
@@ -96,7 +96,7 @@ public class CreateCategoryTest
     }
 
     [Fact(DisplayName = nameof(CreateCategoryWithOnlyName))]
-    [Trait("Application", "CreateCategory - Use Cases")]
+    [Trait("Application", "CreateCategory - UseCases")]
     public async void CreateCategoryWithOnlyNameAndDescription()
     {
         var repositoryMock = CreateCategoryTestFixture.GetRepositoryMock();
@@ -135,7 +135,7 @@ public class CreateCategoryTest
     }
 
     [Theory(DisplayName = nameof(ThrowWhenCantInstantiateCategory))]
-    [Trait("Application", "CreateCategory - Use Cases")]
+    [Trait("Application", "CreateCategory - UseCases")]
     [MemberData(
         nameof(CreateCategoryTestDataGenerator.GetInvalidInputs),
         parameters: 24,

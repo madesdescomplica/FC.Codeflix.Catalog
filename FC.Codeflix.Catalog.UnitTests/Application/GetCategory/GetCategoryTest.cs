@@ -16,7 +16,7 @@ public class GetCategoryTest
         => _fixture = fixture;
 
     [Fact(DisplayName = nameof(GetCategory))]
-    [Trait("Application", "GetCategory - Use Cases")]
+    [Trait("Application", "GetCategory - UseCases")]
     public async Task GetCategory()
     {
         var repositoryMock = _fixture.GetRepositoryMock();
@@ -49,7 +49,7 @@ public class GetCategoryTest
     }
     
     [Fact(DisplayName = nameof(NotFoundExceptionWhenCategoryDoesntExist))]
-    [Trait("Application", "GetCategory - Use Cases")]
+    [Trait("Application", "GetCategory - UseCases")]
     public async Task NotFoundExceptionWhenCategoryDoesntExist()
     {
         var repositoryMock = _fixture.GetRepositoryMock();
