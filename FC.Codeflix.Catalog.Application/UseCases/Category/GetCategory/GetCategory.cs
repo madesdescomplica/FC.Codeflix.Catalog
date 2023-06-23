@@ -1,10 +1,8 @@
 ﻿using FC.Codeflix.Catalog.Domain.Repository;
-using MediatR;
 
 namespace FC.Codeflix.Catalog.Application.UseCases.Category.GetCategory;
 
-public class GetCategory 
-    : IRequestHandler<GetCategoryInput, GetCategoryOutput>
+public class GetCategory : IGetCategory
 {
     private readonly ICategoryRepository _categoryRepository;
 
