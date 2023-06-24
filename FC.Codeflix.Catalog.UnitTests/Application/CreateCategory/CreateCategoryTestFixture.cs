@@ -91,8 +91,8 @@ public class CreateCategoryTestFixture : BaseFixture
         return invalidInputTooLongDescription;
     }
 
-    public static Mock<ICategoryRepository> GetRepositoryMock()
+    public Mock<ICategoryRepository> GetRepositoryMock()
         => new ();
-    public static Mock<IUnitOfWork> GetUnitOfWorkMock()
-        => new();
+    public Mock<IUnitOfWork> GetUnitOfWorkMock()
+        => new ();
 }

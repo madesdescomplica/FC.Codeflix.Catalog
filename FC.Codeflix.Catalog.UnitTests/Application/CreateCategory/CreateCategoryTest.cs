@@ -25,8 +25,8 @@ public class CreateCategoryTest
     [Trait("Application", "CreateCategory - UseCases")]
     public async void CreateCategory()
     {
-        var repositoryMock = CreateCategoryTestFixture.GetRepositoryMock();
-        var unitOfWorkMock = CreateCategoryTestFixture.GetUnitOfWorkMock();
+        var repositoryMock = _fixture.GetRepositoryMock();
+        var unitOfWorkMock = _fixture.GetUnitOfWorkMock();
         var useCase = new UseCases.CreateCategory(
             repositoryMock.Object,
             unitOfWorkMock.Object
@@ -61,8 +61,8 @@ public class CreateCategoryTest
     [Trait("Application", "CreateCategory - UseCases")]
     public async void CreateCategoryWithOnlyName()
     {
-        var repositoryMock = CreateCategoryTestFixture.GetRepositoryMock();
-        var unitOfWorkMock = CreateCategoryTestFixture.GetUnitOfWorkMock();
+        var repositoryMock = _fixture.GetRepositoryMock();
+        var unitOfWorkMock = _fixture.GetUnitOfWorkMock();
         var useCase = new UseCases.CreateCategory(
             repositoryMock.Object,
             unitOfWorkMock.Object
@@ -99,8 +99,8 @@ public class CreateCategoryTest
     [Trait("Application", "CreateCategory - UseCases")]
     public async void CreateCategoryWithOnlyNameAndDescription()
     {
-        var repositoryMock = CreateCategoryTestFixture.GetRepositoryMock();
-        var unitOfWorkMock = CreateCategoryTestFixture.GetUnitOfWorkMock();
+        var repositoryMock = _fixture.GetRepositoryMock();
+        var unitOfWorkMock = _fixture.GetUnitOfWorkMock();
         var useCase = new UseCases.CreateCategory(
             repositoryMock.Object,
             unitOfWorkMock.Object
@@ -147,8 +147,8 @@ public class CreateCategoryTest
     )
     {
         var useCase = new UseCases.CreateCategory(
-            CreateCategoryTestFixture.GetRepositoryMock().Object,
-            CreateCategoryTestFixture.GetUnitOfWorkMock().Object
+            _fixture.GetRepositoryMock().Object,
+            _fixture.GetUnitOfWorkMock().Object
         );
         
         Func<Task> task = async ()

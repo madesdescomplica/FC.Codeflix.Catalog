@@ -1,6 +1,4 @@
-﻿using FC.Codeflix.Catalog.Domain.Entity;
-
-namespace FC.Codeflix.Catalog.Domain.SeedWork;
+﻿namespace FC.Codeflix.Catalog.Domain.SeedWork;
 
 public interface IGenericRepository<TAggregate> : IRepository
 {
@@ -13,4 +11,9 @@ public interface IGenericRepository<TAggregate> : IRepository
         Guid id,
         CancellationToken cancellationToken
     );
+
+    public Task Delete(
+        TAggregate aggregate, 
+        CancellationToken cancellationToken
+    );   
 }
