@@ -7,6 +7,7 @@ using FC.Codeflix.Catalog.UnitTests.Common;
 
 using Moq;
 using Xunit;
+using FC.Codeflix.Catalog.Application.UseCases.Category.UpdateCategory;
 
 namespace FC.Codeflix.Catalog.UnitTests.Application.UpdateCategory;
 
@@ -56,4 +57,12 @@ public class UpdateCategoryTestFixture : BaseFixture
             GetValidCategoryDescription(),
             getRandomBoolean()
             );
+
+    public UpdateCategoryInput GetValidInput(Guid? id = null)
+        => new(
+            id ?? Guid.NewGuid(),
+            GetValidCategoryName(),
+            GetValidCategoryDescription(),
+            getRandomBoolean()
+        );
 }

@@ -6,6 +6,7 @@ using UseCases = FC.Codeflix.Catalog.Application.UseCases.Category.UpdateCategor
 using FluentAssertions;
 using Moq;
 using Xunit;
+using FC.Codeflix.Catalog.Application.Exceptions;
 
 namespace FC.Codeflix.Catalog.UnitTests.Application.UpdateCategory;
 
@@ -62,6 +63,42 @@ public class UpdateCategoryTest
         );
         unitOfWorkMock.Verify(x => x.Commit(
                 It.IsAny<CancellationToken>()
+            ), Times.Once
+        );
+    }
+    
+    [Fact(DisplayName = nameof(ThrowWhenCategoryNotFound))]
+    [Trait("Application", "UpdateCategory - UseCases")]
+    public async Task ThrowWhenCategoryNotFound()
+    {
+        var repositoryMock = _fixture.GetRepositoryMock();
+        var unitOfWorkMock = _fixture.GetUnitOfWorkMock();
+        var input = _fixture.GetValidInput();
+        repositoryMock
+            .Setup(x => x.Get(
+                input.Id,
+                It.IsAny<CancellationToken>())
+            ).ThrowsAsync(
+                new NotFoundException(
+                    $"Category '{input.Id}' not found"     
+                )
+            );
+        var useCase = new UseCases.UpdateCategory(
+            repositoryMock.Object,
+            unitOfWorkMock.Object
+        );
+
+        var task = async ()
+            => await useCase.Handle(
+                input,
+                CancellationToken.None
+            );
+
+        await task.Should().ThrowAsync<NotFoundException>();
+
+        repositoryMock.Verify(x => x.Get(
+            input.Id,
+            It.IsAny<CancellationToken>()
             ), Times.Once
         );
     }
