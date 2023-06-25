@@ -1,4 +1,4 @@
-﻿using DomainEntity = FC.Codeflix.Catalog.Domain.Entity;
+﻿using DomainEntity=  FC.Codeflix.Catalog.Domain.Entity;
 using FC.Codeflix.Catalog.Domain.Repository;
 
 using FC.Codeflix.Catalog.Application.Interfaces;

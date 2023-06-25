@@ -1,9 +1,11 @@
-﻿using UseCases = FC.Codeflix.Catalog.Application.UseCases.Category.UpdateCategory;
+﻿using DomainEntity = FC.Codeflix.Catalog.Domain.Entity;
 
+using FC.Codeflix.Catalog.Application.UseCases.Category.Common;
+using UseCases = FC.Codeflix.Catalog.Application.UseCases.Category.UpdateCategory;
+
+using FluentAssertions;
 using Moq;
 using Xunit;
-using FC.Codeflix.Catalog.Application.UseCases.Category.Common;
-using FluentAssertions;
 
 namespace FC.Codeflix.Catalog.UnitTests.Application.UpdateCategory;
 
@@ -15,24 +17,25 @@ public class UpdateCategoryTest
     public UpdateCategoryTest(UpdateCategoryTestFixture fixture)
         => _fixture = fixture;
 
-    [Fact(DisplayName = nameof(UpdateCategory))]
+    [Theory(DisplayName = nameof(UpdateCategory))]
     [Trait("Application", "UpdateCategory - UseCases")]
-    public async Task UpdateCategory()
+    [MemberData(
+        nameof(UpdateCategoryTestDataGenerator.GetCategoriesToUpdate), 
+        parameters: 10,
+        MemberType = typeof(UpdateCategoryTestDataGenerator)
+     )]
+    public async Task UpdateCategory(
+        DomainEntity.Category exampleCategory,
+        UseCases.UpdateCategoryInput input
+    )
     {
         var repositoryMock = _fixture.GetRepositoryMock();
         var unitOfWorkMock = _fixture.GetUnitOfWorkMock();
-        var exampleCategory = _fixture.GetExampleCategory();
         repositoryMock
             .Setup(x => x.Get(
                 exampleCategory.Id,
                 It.IsAny<CancellationToken>())
             ).ReturnsAsync(exampleCategory);
-        var input = new UseCases.UpdateCategoryInput(
-            exampleCategory.Id,
-            _fixture.GetValidCategoryName(),
-            _fixture.GetValidCategoryDescription(),
-            !exampleCategory.IsActive
-        );
         var useCase = new UseCases.UpdateCategory(
             repositoryMock.Object,
             unitOfWorkMock.Object
@@ -47,6 +50,11 @@ public class UpdateCategoryTest
         output.Name.Should().Be(input.Name);
         output.Description.Should().Be(input.Description);
         output.IsActive.Should().Be(input.IsActive);
+        repositoryMock.Verify(x => x.Get(
+            exampleCategory.Id,
+            It.IsAny<CancellationToken>()
+            ), Times.Once
+        );
         repositoryMock.Verify(x => x.Update(
                 exampleCategory,
                 It.IsAny<CancellationToken>()
