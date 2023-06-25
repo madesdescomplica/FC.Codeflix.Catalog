@@ -15,5 +15,10 @@ public interface IGenericRepository<TAggregate> : IRepository
     public Task Delete(
         TAggregate aggregate, 
         CancellationToken cancellationToken
-    );   
+    );  
+    
+    public Task Update(
+        TAggregate aggregate, 
+        CancellationToken cancellationToken
+    );
 }
