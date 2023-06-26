@@ -48,6 +48,7 @@ public abstract class CategoryUseCasesBaseFixture
     public DomainEntity.Category GetExampleCategory()
         => new(
             GetValidCategoryName(),
-            GetValidCategoryDescription()
+            GetValidCategoryDescription(),
+            GetRandomBoolean()
         );
 }
