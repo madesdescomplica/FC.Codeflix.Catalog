@@ -1,21 +1,20 @@
-﻿using DomainEntity=  FC.Codeflix.Catalog.Domain.Entity;
+﻿using DomainEntity = FC.Codeflix.Catalog.Domain.Entity;
 using FC.Codeflix.Catalog.Domain.Repository;
 
 using FC.Codeflix.Catalog.Application.Interfaces;
+using FC.Codeflix.Catalog.Application.UseCases.Category.UpdateCategory;
 
 using FC.Codeflix.Catalog.UnitTests.Common;
 
 using Moq;
 using Xunit;
-using FC.Codeflix.Catalog.Application.UseCases.Category.UpdateCategory;
-using FC.Codeflix.Catalog.Application.UseCases.Category.CreateCategory;
 
 namespace FC.Codeflix.Catalog.UnitTests.Application.UpdateCategory;
 
 [CollectionDefinition(nameof(UpdateCategoryTestFixture))]
 public class UpdateCategoryTestFixtureCollection
     : ICollectionFixture<UpdateCategoryTestFixture>
-{}
+{ }
 
 public class UpdateCategoryTestFixture : BaseFixture
 {
@@ -49,22 +48,23 @@ public class UpdateCategoryTestFixture : BaseFixture
         return categoryDescription;
     }
 
-    public bool getRandomBoolean()
-        => (new Random()).NextDouble() < 0.5;
 
-    public DomainEntity.Category GetExampleCategory()
-        => new(
-            GetValidCategoryName(),
-            GetValidCategoryDescription(),
-            getRandomBoolean()
-            );
+    public bool GetRandomBoolean()
+        => (new Random()).NextDouble() < 0.5;
 
     public UpdateCategoryInput GetValidInput(Guid? id = null)
         => new(
             id ?? Guid.NewGuid(),
             GetValidCategoryName(),
             GetValidCategoryDescription(),
-            getRandomBoolean()
+            GetRandomBoolean()
+        );
+
+    public DomainEntity.Category GetExampleCategory()
+        => new(
+            GetValidCategoryName(),
+            GetValidCategoryDescription(),
+            GetRandomBoolean()
         );
 
     public UpdateCategoryInput GetInvalidInputShortName()

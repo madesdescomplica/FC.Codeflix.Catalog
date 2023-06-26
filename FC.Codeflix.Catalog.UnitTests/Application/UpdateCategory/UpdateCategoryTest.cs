@@ -1,4 +1,5 @@
 ﻿using DomainEntity = FC.Codeflix.Catalog.Domain.Entity;
+using FC.Codeflix.Catalog.Domain.Exceptions;
 
 using FC.Codeflix.Catalog.Application.Exceptions;
 using FC.Codeflix.Catalog.Application.UseCases.Category.Common;
@@ -8,7 +9,6 @@ using FC.Codeflix.Catalog.Application.UseCases.Category.UpdateCategory;
 using FluentAssertions;
 using Moq;
 using Xunit;
-using FC.Codeflix.Catalog.Domain.Exceptions;
 
 namespace FC.Codeflix.Catalog.UnitTests.Application.UpdateCategory;
 
@@ -29,7 +29,7 @@ public class UpdateCategoryTest
      )]
     public async Task UpdateCategory(
         DomainEntity.Category exampleCategory,
-        UseCases.UpdateCategoryInput input
+        UpdateCategoryInput input
     )
     {
         var repositoryMock = _fixture.GetRepositoryMock();
