@@ -8,6 +8,7 @@ using FC.Codeflix.Catalog.UnitTests.Common;
 using Moq;
 using Xunit;
 using FC.Codeflix.Catalog.Application.UseCases.Category.UpdateCategory;
+using FC.Codeflix.Catalog.Application.UseCases.Category.CreateCategory;
 
 namespace FC.Codeflix.Catalog.UnitTests.Application.UpdateCategory;
 
@@ -65,4 +66,41 @@ public class UpdateCategoryTestFixture : BaseFixture
             GetValidCategoryDescription(),
             getRandomBoolean()
         );
+
+    public UpdateCategoryInput GetInvalidInputShortName()
+    {
+        var invalidInputShortName = GetValidInput();
+        invalidInputShortName.Name =
+            invalidInputShortName.Name[..2];
+        return invalidInputShortName;
+    }
+
+    public UpdateCategoryInput GetInvalidInputTooLongName()
+    {
+        var invalidInputTooLongName = GetValidInput();
+        var tooLongNameForCategory = Faker.Commerce.ProductName();
+        while (tooLongNameForCategory.Length <= 255)
+        {
+            tooLongNameForCategory =
+                $"{tooLongNameForCategory} " +
+                $"{Faker.Commerce.ProductName()}";
+        }
+        invalidInputTooLongName.Name = tooLongNameForCategory;
+        return invalidInputTooLongName;
+    }
+
+    public UpdateCategoryInput GetInvalidInputTooLongDescription()
+    {
+        var invalidInputTooLongDescription = GetValidInput();
+        var tooLongDescriptionForCategory = Faker.Commerce.ProductDescription();
+        while (tooLongDescriptionForCategory.Length <= 10_000)
+        {
+            tooLongDescriptionForCategory =
+                $"{tooLongDescriptionForCategory} " +
+                $"{Faker.Commerce.ProductDescription()}";
+        }
+        invalidInputTooLongDescription.Description = tooLongDescriptionForCategory;
+        return invalidInputTooLongDescription;
+    }
+
 }

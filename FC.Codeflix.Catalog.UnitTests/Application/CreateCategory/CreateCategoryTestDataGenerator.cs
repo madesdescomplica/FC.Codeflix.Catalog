@@ -40,6 +40,8 @@ public class CreateCategoryTestDataGenerator
                         "Description should be less or equal 10000 characters long"
                     });
                     break;
+                default:
+                    break;
             }
         }
 
