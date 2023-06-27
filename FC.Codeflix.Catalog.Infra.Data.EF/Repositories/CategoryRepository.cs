@@ -19,8 +19,7 @@ public class CategoryRepository : ICategoryRepository
     public async Task Insert(
         Category aggregate, 
         CancellationToken cancellationToken
-    )
-        => await _categories.AddAsync(aggregate, cancellationToken);
+    ) => await _categories.AddAsync(aggregate, cancellationToken);
 
     public async Task<Category> Get(
         Guid id, 
@@ -43,23 +42,33 @@ public class CategoryRepository : ICategoryRepository
     public Task Update(
         Category aggregate, 
         CancellationToken cancellationToken
-    )
-        => Task.FromResult(_categories.Update(aggregate));
+    ) => Task.FromResult(_categories.Update(aggregate));
 
     public Task Delete(
         Category aggregate, 
         CancellationToken cancellationToken
-    )
-        => Task.FromResult(_categories.Remove(aggregate));
+    ) => Task.FromResult(_categories.Remove(aggregate));
 
     public async Task<SearchOutput<Category>> Search(
         SearchInput input, 
         CancellationToken cancellationToken
     )
     {
-        var total = await _categories.CountAsync();
-        var items = await _categories.ToListAsync();
-        return new SearchOutput<Category>(
+        var toSkip = (input.Page - 1) * input.PerPage;
+        var query = _categories.AsNoTracking();
+
+        if (!string.IsNullOrWhiteSpace(input.Search))
+            query = query.Where(
+                x => x.Name.Contains(input.Search)
+            );
+
+        var total = await query.CountAsync();
+        var items = await query
+            .Skip(toSkip)
+            .Take(input.PerPage)
+            .ToListAsync();
+
+        return new (
             input.Page, 
             input.PerPage,
             total,
