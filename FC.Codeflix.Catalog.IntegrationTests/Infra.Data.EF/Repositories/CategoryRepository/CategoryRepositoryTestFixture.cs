@@ -1,5 +1,5 @@
 ﻿using FC.Codeflix.Catalog.Domain.Entity;
-
+using FC.Codeflix.Catalog.Domain.SeedWork.SearchableRepository;
 using FC.Codeflix.Catalog.Infra.Data.EF;
 
 using FC.Codeflix.Catalog.IntegrationTests.Base;
@@ -43,7 +43,7 @@ public class CategoryRepositoryTestFixture
     }
 
     public bool GetRandomBoolean()
-        => (new Random()).NextDouble() < 0.5;
+        => new Random().NextDouble() < 0.5;
 
     public Category GetExampleCategory()
         => new(
@@ -65,6 +65,22 @@ public class CategoryRepositoryTestFixture
                 return category;
             }
         ).ToList();
+
+    public List<Category> CloneCategoriesListOrdered(
+        List<Category> categoriesList,
+        string orderBy, 
+        SearchOrder order
+    ) 
+    {
+        var listClone = new List<Category>(categoriesList);
+        var orderedEnumerable = (orderBy, order) switch
+        {
+            ("name", SearchOrder.Asc) => listClone.OrderBy(x => x.Name),
+            ("name", SearchOrder.Desc) => listClone.OrderByDescending(x => x.Name),
+            _ => listClone.OrderBy(x => x.Name)
+        };
+        return orderedEnumerable.ToList();
+    }
 
     public CodeflixCatalogDbContext CreateDbContext(bool preserveData = false)
     {

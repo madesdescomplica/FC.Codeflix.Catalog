@@ -56,7 +56,8 @@ public class CategoryRepository : ICategoryRepository
     {
         var toSkip = (input.Page - 1) * input.PerPage;
         var query = _categories.AsNoTracking();
-
+        query = query.OrderBy(x => x.Name);
+        
         if (!string.IsNullOrWhiteSpace(input.Search))
             query = query.Where(
                 x => x.Name.Contains(input.Search)
