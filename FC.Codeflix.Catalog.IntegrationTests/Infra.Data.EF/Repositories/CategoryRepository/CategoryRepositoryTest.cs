@@ -26,7 +26,8 @@ public class CategoryRepositoryTest
 
         await categoryRepository.Insert(exampleCategory, CancellationToken.None);
         await dbContext.SaveChangesAsync(CancellationToken.None);
-        var dbCategory = await dbContext.Categories.FindAsync(exampleCategory.Id);
+        var dbCategory = await (_fixture.CreateDbContext())
+            .Categories.FindAsync(exampleCategory.Id);
 
         dbCategory.Should().NotBeNull();
         dbCategory!.Name.Should().Be(exampleCategory.Name);
@@ -45,7 +46,9 @@ public class CategoryRepositoryTest
         exampleCategoriesList.Add(exampleCategory);
         await dbContext.AddRangeAsync(exampleCategoriesList);
         await dbContext.SaveChangesAsync(CancellationToken.None);
-        var categoryRepository = new Repository.CategoryRepository(dbContext);
+        var categoryRepository = new Repository.CategoryRepository(
+            _fixture.CreateDbContext()
+        );
 
         var dbCategory = await categoryRepository.Get(
             exampleCategory.Id, 
@@ -103,12 +106,38 @@ public class CategoryRepositoryTest
         );
         await dbContext.SaveChangesAsync();
 
-        var dbCategory = await dbContext.Categories.FindAsync(exampleCategory.Id);
+        var dbCategory = await (_fixture.CreateDbContext())
+            .Categories.FindAsync(exampleCategory.Id);
         dbCategory.Should().NotBeNull();
         dbCategory!.Id.Should().Be(exampleCategory.Id);
         dbCategory.Name.Should().Be(exampleCategory.Name);
         dbCategory.Description.Should().Be(exampleCategory.Description);
         dbCategory.IsActive.Should().Be(exampleCategory.IsActive);
         dbCategory.CreatedAt.Should().Be(exampleCategory.CreatedAt);
+    }
+
+
+    [Fact(DisplayName = nameof(Delete))]
+    [Trait("Integration/Infra.Data", "CategoryRepository - Repositories")]
+    public async Task Delete()
+    {
+        CodeflixCatalogDbContext dbContext = _fixture.CreateDbContext();
+        var exampleCategory = _fixture.GetExampleCategory();
+        var exampleCategoriesList = _fixture.GetExampleCategoriesList(15);
+        exampleCategoriesList.Add(exampleCategory);
+        await dbContext.AddRangeAsync(exampleCategoriesList);
+        await dbContext.SaveChangesAsync(CancellationToken.None);
+        var categoryRepository = new Repository.CategoryRepository(dbContext);
+
+        await categoryRepository.Delete(
+            exampleCategory,
+            CancellationToken.None
+        );
+        await dbContext.SaveChangesAsync();
+
+        var dbCategory = await (_fixture.CreateDbContext())
+            .Categories.FindAsync(exampleCategory.Id);
+        
+        dbCategory.Should().BeNull();
     }
 }

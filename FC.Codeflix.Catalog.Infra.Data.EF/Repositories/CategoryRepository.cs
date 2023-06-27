@@ -24,7 +24,10 @@ public class CategoryRepository : ICategoryRepository
 
     public async Task<Category> Get(Guid id, CancellationToken cancellationToken)
     {
-        var category = await _categories.FindAsync(id, cancellationToken);
+        var category = await _categories.AsNoTracking().FirstOrDefaultAsync(
+            x => x.Id == id, 
+            cancellationToken
+        );
 
         NotFoundException.ThrowIfNull(
             category, 
@@ -38,9 +41,7 @@ public class CategoryRepository : ICategoryRepository
         => Task.FromResult(_categories.Update(aggregate));
 
     public Task Delete(Category aggregate, CancellationToken cancellationToken)
-    {
-        throw new NotImplementedException();
-    }
+        => Task.FromResult(_categories.Remove(aggregate));
 
     public Task<SearchOutput<Category>> Search(SearchInput input, CancellationToken cancellationToken)
     {
