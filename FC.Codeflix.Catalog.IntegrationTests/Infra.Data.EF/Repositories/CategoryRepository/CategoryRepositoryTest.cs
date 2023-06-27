@@ -309,6 +309,12 @@ public class CategoryRepositoryTest
     [Theory(DisplayName = nameof(SearchOrdered))]
     [Trait("Integration/Infra.Data", "CategoryRepository - Repositories")]
     [InlineData("name", "asc")]
+    [InlineData("name", "desc")]
+    [InlineData("id", "asc")]
+    [InlineData("id", "desc")]
+    [InlineData("createdAt", "asc")]
+    [InlineData("createdAt", "desc")]
+    [InlineData("", "asc")]
     public async Task SearchOrdered(
         string orderBy,
         string order

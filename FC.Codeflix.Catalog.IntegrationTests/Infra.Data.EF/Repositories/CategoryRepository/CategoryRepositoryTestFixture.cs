@@ -73,26 +73,16 @@ public class CategoryRepositoryTestFixture
     ) 
     {
         var listClone = new List<Category>(categoriesList);
-        var orderedEnumerable = (orderBy, order) switch
+        var orderedEnumerable = (orderBy.ToLower(), order) switch
         {
             ("name", SearchOrder.Asc) => listClone.OrderBy(x => x.Name),
             ("name", SearchOrder.Desc) => listClone.OrderByDescending(x => x.Name),
+            ("id", SearchOrder.Asc) => listClone.OrderBy(x => x.Id),
+            ("id", SearchOrder.Desc) => listClone.OrderByDescending(x => x.Id),
+            ("createdat", SearchOrder.Asc) => listClone.OrderBy(x => x.CreatedAt),
+            ("createdat", SearchOrder.Desc) => listClone.OrderByDescending(x => x.CreatedAt),
             _ => listClone.OrderBy(x => x.Name)
         };
         return orderedEnumerable.ToList();
-    }
-
-    public CodeflixCatalogDbContext CreateDbContext(bool preserveData = false)
-    {
-        var context = new CodeflixCatalogDbContext(
-            new DbContextOptionsBuilder<CodeflixCatalogDbContext>()
-                .UseInMemoryDatabase("integration-tests-db")
-                .Options
-        );
-
-        if (!preserveData)
-            context.Database.EnsureDeleted();
-        
-        return context;
     }
 }
